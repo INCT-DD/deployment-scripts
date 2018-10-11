@@ -1,0 +1,44 @@
+#!/usr/bin/env powscript
+
+# INSTALLING DEPS
+
+sudo apt update && apt install -y libcap2 libcap2-bin
+
+# DOWNLOADING AND INSTALLING CADDY
+
+wget https://caddyserver.com/download/linux/amd64?plugins=hook.service,http.cache,http.cgi,http.expires,http.filemanager,http.forwardproxy,http.git,http.login,http.minify,http.realip,http.upload,tls.dns.googlecloud&license=personal&telemetry=off -O /tmp/caddy.tar.gz
+sudo mkdir /opt/caddy && sudo tar zxvf /tmp/caddy.tar.gz --directory /opt/caddy --strip-components=1
+sudo install --backup --compare /opt/caddy/caddy /usr/local/bin/ && sudo setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy
+
+# CREATING USER AND GROUP
+
+sudo groupadd -g 33 www-data
+sudo useradd -g www-data --no-user-group --home-dir /var/www --no-create-home \
+--shell /usr/sbin/nologin --system --uid 33 www-data
+
+# CREATING CONFIG AND SSL DIRECTORIES
+
+sudo mkdir /etc/caddy
+sudo chown -R root:www-data /etc/caddy
+sudo mkdir /etc/ssl/caddy
+sudo chown -R root:www-data /etc/ssl/caddy
+sudo chmod 0770 /etc/ssl/caddy
+
+# INSTALLING DEFAULT CONFIG
+
+wget http://update.this -O /tmp/Caddyfile \
+&& sudo install --backup --compare /tmp/Caddyfile /etc/caddy/ \
+&& sudo chown www-data:www-data /etc/caddy/Caddyfile \
+&& sudo chmod 0444 /etc/caddy/Caddyfile
+
+# CREATING SERVER FOLDER STRUCT
+
+sudo mkdir -p /var/www/localhost \
+&& sudo chown -R www-data:www-data /var/www \
+&& sudo chmod 555 /var/www && sudo chmod 555 /var/www/localhost
+
+# INSTALLING THE SERVICE
+
+wget http://update.this -O /tmp/caddy.service \
+&& sudo install --backup --compare /tmp/caddy.service /etc/systemd/system/ \
+&& sudo systemctl daemon-reload && sudo systemctl enable caddy && sudo systemctl start caddy
