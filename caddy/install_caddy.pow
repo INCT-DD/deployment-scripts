@@ -26,7 +26,7 @@ sudo chmod 0770 /etc/ssl/caddy
 
 # INSTALLING DEFAULT CONFIG
 
-wget http://update.this -O /tmp/Caddyfile \
+wget https://raw.githubusercontent.com/INCT-DD/deployment-scripts/master/caddy/Caddyfile -O /tmp/Caddyfile \
 && sudo install --backup --compare /tmp/Caddyfile /etc/caddy/ \
 && sudo chown www-data:www-data /etc/caddy/Caddyfile \
 && sudo chmod 0444 /etc/caddy/Caddyfile
@@ -39,6 +39,6 @@ sudo mkdir -p /var/www/localhost \
 
 # INSTALLING THE SERVICE
 
-wget http://update.this -O /tmp/caddy.service \
+wget https://raw.githubusercontent.com/INCT-DD/deployment-scripts/master/caddy/caddy.service -O /tmp/caddy.service \
 && sudo install --backup --compare /tmp/caddy.service /etc/systemd/system/ \
 && sudo systemctl daemon-reload && sudo systemctl enable caddy && sudo systemctl start caddy
