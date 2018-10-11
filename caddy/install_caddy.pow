@@ -7,7 +7,8 @@ sudo apt update && sudo apt install -y libcap2 libcap2-bin
 # DOWNLOADING AND INSTALLING CADDY
 
 wget "https://caddyserver.com/download/linux/amd64?plugins=hook.service,http.cache,http.cgi,http.expires,http.filemanager,http.forwardproxy,http.git,http.login,http.minify,http.realip,http.upload,tls.dns.googlecloud&license=personal&telemetry=off" -O /tmp/caddy.tar.gz
-sudo mkdir /opt/caddy && sudo tar zxvf /tmp/caddy.tar.gz --directory /opt/caddy --strip-components=1
+sudo mkdir /opt/caddy
+sudo tar zxvf /tmp/caddy.tar.gz --directory /opt/caddy
 sudo install --backup --compare /opt/caddy/caddy /usr/local/bin/ && sudo setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy
 
 # CREATING USER AND GROUP
