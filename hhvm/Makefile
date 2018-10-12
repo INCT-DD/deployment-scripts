@@ -1,5 +1,5 @@
-SOURCE	 = install_caddy.pow
-OUT	     = install_caddy.sh
+SOURCE	 = install_hhvm.pow
+OUT	     = install_hhvm.sh
 POW	     = powscript
 FLAGS	 = --compile --to bash --no-cache
 
